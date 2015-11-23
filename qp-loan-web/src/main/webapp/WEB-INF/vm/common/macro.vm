@@ -1,0 +1,86 @@
+##分页
+#macro(showPage $page $module)
+	<ul>
+	#if($page.previousPageAvailable)
+		<li><a href="$module.addQueryData("index","1").render()">首页</a></li>
+		<li><a href="$module.addQueryData("index","$!{page.previousPage}").render()").render()">上一页</a></li>
+	#else
+		<li><span>首页</span></li>
+		<li><span>上一页</span></li>
+	#end
+	
+	
+	#set($prePage = $page.index - 3)
+	#set($nextPage = $page.index + 3)
+	
+	#if($prePage<1)
+		#set($prePage = 1)
+	#end
+	
+	#if($nextPage>$!page.totalPage)
+		#set($nextPage = $!page.totalPage)
+	#end
+	
+	#if($prePage == $nextPage)
+		<li><span class="currentpage">1</span></li>
+	#else
+		#foreach($i in [$prePage..$nextPage])
+			#if($i == $page.index)
+				<li><span class="currentpage">$i</span></li>
+			#else
+				<li><a href="$module.addQueryData("index","$i").render()"><span>$i</span></a></li>
+			#end
+		#end
+	#end
+	
+	
+	#if($page.nextPageAvailable)
+		<li><a href="$module.addQueryData("index","$!{page.nextPage}").render()">下一页</a></li>
+		<li><a href="$module.addQueryData("index","$!{page.totalPage}").render()").render()">尾页</a></li>
+	#else
+		<li><span>下一页</span></li>
+		<li><span>尾页</span></li>
+	#end
+
+	$module.reset()
+#end
+
+##分页
+#macro(showBbsPage $page $module)
+#if($page.totalPage > 0)
+	#if($page.previousPageAvailable)
+		<a class="pageItem pagePrev" href="$module.addQueryData("index","$!{page.previousPage}").render()").render()">上一页</a>
+	#end
+	
+	
+	#set($prePage = $page.index - 3)
+	#set($nextPage = $page.index + 3)
+	
+	#if($prePage<1)
+		#set($prePage = 1)
+	#end
+	
+	#if($nextPage>$!page.totalPage)
+		#set($nextPage = $!page.totalPage)
+	#end
+	
+	#if($prePage == $nextPage)
+		<span class="pageItem">1</span>
+	#else
+		#foreach($i in [$prePage..$nextPage])
+			#if($i == $page.index)
+				<span class="currentpage">$i</span>
+			#else
+				<a class="pageItem" href="$module.addQueryData("index","$i").render()">$i</a>
+			#end
+		#end
+	#end
+	
+	
+	#if($page.nextPageAvailable)
+		<a class="pageItem pageBack" href="$module.addQueryData("index","$!{page.nextPage}").render()">下一页</a>
+	#end
+
+	$module.reset()
+#end
+#end

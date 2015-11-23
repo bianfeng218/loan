@@ -1,0 +1,116 @@
+#macro (showPage $pageIndex $totalPages $start $end $total)
+	#if( !$pageIndex || 1 > $pageIndex)
+    	#set($pageIndex=1)
+    #end
+    #if( !$totalPages || 1 > $totalPages )
+    	#set($totalPages=1)
+    	#set($pageIndex=1)
+    #end
+    #if( !$total || 1 > $total)
+    	#set($start=0)
+    	#set($end=0)
+    	#set($total=0)
+    #end
+    #if($pageIndex > $totalPages)
+    	#set($pageIndex=$totalPages)
+    #end
+<div class="row">
+	<div class="col-xs-6">
+		<div class="dataTables_info" id="sample-table-2_info">当前显示 $start - $end, 共 $total 条数据</div>
+	</div>
+	<div class="col-xs-6">
+		<div class="dataTables_paginate paging_bootstrap">
+			<ul class="pagination">
+				#set($_prev=$pageIndex - 2)
+				#if($_prev>0)
+				<li class="prev">
+					<a href="javascript:toPage($_prev,$totalPages);">
+				#else
+				<li class="prev disabled">
+					<a href="javascript:;">
+				#end
+						<i class="fa fa-angle-double-left"></i>
+					</a>
+				</li>
+				#set($_prev=$pageIndex - 1)
+				#if($_prev>0)
+            	<li class="prev">
+					<a href="javascript:toPage($_prev,$totalPages);">
+						<i class="fa fa-angle-left"></i>
+					</a>
+				</li>
+            	#else
+            	<li class="prev disabled">
+					<a href="javascript:;"><i class="fa fa-angle-left"></i></a>
+				</li>
+            	#end
+            	#if($totalPages>10)
+            		#if($pageIndex>1)
+            	<li><a href="javascript:toPage(1,$totalPages);">1</a></li>
+            		#else
+            	<li><a class="current" href="javascript:void(0);">1</a></li>
+            		#end
+            		#if($pageIndex>4)
+            			#set($_start=$pageIndex - 3)
+            		#else
+            			#set($_start=2)
+            		#end
+            		#set($_end=$pageIndex + 2)
+            		#if($_end >= $totalPages)
+            			#set($_end=$totalPages - 1)
+            		#end
+            		#if($_start>2)
+            		<li><a class="dot">...</a></li>
+            		#end
+            		#foreach($i in [$_start..$_end])
+            			#if($i==$pageIndex)
+            	<li class="active"><a href="javascript:void(0);">$i</a></li>
+            			#else
+            	<li ><a href="javascript:toPage($i,$totalPages);">$i</a></li>
+            			#end
+            		#end
+            		#if($_end<$totalPages - 1)
+            		<li><a class="dot">...</a></li>
+            		#end
+            		#if($pageIndex>=$totalPages)
+            	<li class="active"><a href="javascript:void(0);">$totalPages</a></li>
+            		#else
+            	<li><a href="javascript:toPage($totalPages,$totalPages);">$totalPages</a></li>
+            		#end
+            	#else
+            		#foreach($i in [1..$totalPages])
+            			#if($i == $pageIndex || $pageIndex > $totalPages)
+            	<li class="active"><a href="javascript:void(0);">$i</a></li>
+            			#else
+            	<li ><a href="javascript:toPage($i,$totalPages);">$i</a></li>
+            			#end
+            		#end
+           		#end
+
+				#set($_next=$pageIndex+1)
+				#if($totalPages >= $_next)
+				<li class="next">
+					<a href="javascript:toPage($_next,$totalPages);">
+				#else
+				<li class="next disabled">
+					<a href="javascript:;">
+				#end
+						<i class="fa fa-angle-right"></i>
+					</a>
+				</li>
+				#set($_next=$pageIndex+2)
+				#if($totalPages >= $_next)
+				<li class="next">
+					<a href="javascript:toPage($_next,$totalPages);">
+				#else
+				<li class="next disabled">
+					<a href="javascript:;">
+				#end
+						<i class="fa fa-angle-double-right"></i>
+					</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+#end

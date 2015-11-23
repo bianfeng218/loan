@@ -1,0 +1,43 @@
+.navbar{height:119px;}
+#navbar-container{width:100%;height:105px;}
+#navbar-container .navbar_left{height:50px;float: left;}
+#navbar-container .navbar_header_nav{padding:10px 0 0 30px;float: left;}
+#navbar-container .navbar_header_img{padding:15px 0 0 30px;float: left;}
+#navbar-container .navbar_header_img .navbar_header_word{padding:25px 0 0 10px;font-size:12px;color:#fff;}
+
+#navbar-container .navbar_right{float: right;height:50px;padding:20px 30px 0 0;z-index: 100;}
+#navbar-container .navbar_right .navbar_right_collect{float: left;margin:0 20px;}
+#navbar-container .navbar_right .navbar_right_exit{float: left;margin:0 50px 0 20px;}
+#navbar-container .navbar_right .navbar_right_collect_word{color: #fff;margin:0 0 0 10px;}
+#navbar-container .navbar_right .narbar_right_word{line-height: 27px;height: 27px;color:#fff;}
+
+#navbar-container .navbar_one{height:60px;}
+#navbar-container .navbar_two{height:45px;bottom:0;}
+#navbar-container .navbar_tag{margin: 0 0 0 50px;}
+#navbar-container .navbar_tag li{width:147px;height:35px;background: #6aaacf;display:inline-block;;float: left;text-align: center;}
+#navbar-container .navbar_tag li:hover{background: #2d7ba8;}
+#navbar-container .navbar_tag_li a{color:#fff;font-size:14px;line-height: 35px;}
+#navbar-container .navbar_tag_li_one{width:147px;height:35px;background: #2d7ba8;display:inline-block;;float: left;text-align: center;}
+#navbar-container .navbar_tag_li_one a{color:#fff;font-size:14px;line-height: 35px;}
+.content_frame{width:100%; min-height:850px;}
+.btn-scroll-up.display{right:30px;}
+.shop-pos-tr.pull-right{ position: relative; top: 4px; right: 2px; }
+/*商品发布css*/
+.cate-wrapper { width: 100%; margin: auto; }
+.cate-wrapper .nav { font-size: 14px; background: none repeat scroll 0px 0px #EFF3F8; font-weight: bold; height: 35px; overflow: hidden; padding: 10px 0px 5px 10px; text-align: left;}
+#cate-container { border: 1px solid #D5E4FA; background: none repeat scroll 0% 0% #EFF3F8; height: 298px;}
+#cate-container .cat_box { display: block; float: left; margin-left: 5px; width: 223px; border-right: 2px solid #D5E4FA; overflow-y: auto;  overflow-x: hidden; height: 100%;}
+#cate-container .cat_box li { padding: 0px 16px 0px 14px; cursor: pointer; height: 20px; line-height: 20px; overflow: hidden;}
+#cate-path { color: #444; padding-top: 9px; position: relative; line-height: 22px; height: 54px; display: block;}
+#cate-path .clearfix { display: block; clear: both; height: 22px; }
+#cate-path dl { background-color: #FFFAF2; border: 1px solid #FEDBAB; padding: 4px 27px;}
+#cate-path dt, #cate-path dd { float: left; margin: 0px; padding: 0px;}
+#cate-path li { float: left; margin: 0px; padding: 0px;}
+ul, ol { margin: 0px; padding: 0px; list-style: none outside none; }
+#cate-container li.selected { border: 1px solid #9CD7FC; background-color: #DFF1FB;}
+#cateBottom { padding: 5px 0px 24px; text-align: center;}
+
+label.error {color: #db8978;margin:5px 0 0 5px;}
+input.error{border-color:#db8978}
+
+.tags {height : 300px}

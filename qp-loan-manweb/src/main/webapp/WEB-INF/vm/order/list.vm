@@ -1,0 +1,183 @@
+#set($nav_1st="订单管理" ) #set($nav_2nd="订单列表" )
+<script src="${staticServer}/bu2x/js/order/list.js"></script>
+<div class="grid" style="width: 100%; float: left; height: 500px;">
+	<div class="toolbar" style="height:32px;">
+		<div id="myButtons" style="width: 100%; float: left; height: 30px;">
+			#if($!firstInit =="true")
+			<button type="button" id="serachorderBtn"
+				class="btn btn-white btn-info btn-bold">
+				<span class="glyphicon glyphicon-search"></span>高级搜索
+			</button>
+			#else
+			<button type="button" id="_serachorderBtn"
+				class="btn btn-white btn-info btn-bold">
+				<span class="glyphicon glyphicon-search"></span>搜索
+			</button>
+			#end
+		</div>
+	</div>
+	<div style="clear:both;height:10px;"></div>
+	<form id="orderListForm" role="form" method="post" action="list.do">
+		<input id="firstInit" name="firstInit" value='$!firstInit' type="hidden" />
+		<input id="page" type="hidden" name="page" value="0" />
+		#if($!firstInit =="true")
+		<div id="searchcbox" style="width: 100%;height:64px;display:none;">
+		#else
+		<div id="searchcbox" style="width: 100%;height:64px">
+		#end
+			<div class="col-xs-12">
+				<div class="col-xs-4">
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right" for="form-field-1">订单ID</label>
+						<div class="col-sm-9">
+							<span class="input-icon"><input type="text" id="orderId" name="orderId" value='$!query.hostOrderId' /><i class="ace-icon fa fa-leaf blue"></i><span>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-4">
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right" for="form-field-1">用户账号</label>
+						<div class="col-sm-9">
+							<span class="input-icon"><input type="text" id="userAccount" name="userAccount" value='$!query.userAccount' /><i class="ace-icon fa fa-leaf blue"></i><span>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-4">
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right" for="form-field-1">商家名称</label>
+						<div class="col-sm-9">
+							<span class="input-icon"><input type="text" id="venderName" name="venderName" value='$!query.venderName' /><i class="ace-icon fa fa-leaf blue"></i><span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-xs-12">
+				<div class="space-4"></div>
+				<div class="col-xs-4">
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right" for="form-field-1">订单状态</label>
+						<div class="col-sm-9">
+							<select class="col-xs-10 col-sm-9" id="orderStatus" name="orderStatus">
+								<option value="">全部</option>
+								#foreach($status in $!orderStatusMap.keySet())
+									<option value='$!status' #if($!status == $!query.orderStatus)selected="true" #end>$!orderStatusMap.get($status)</option>
+								#end
+							</select>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-4">
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right" for="form-field-1">支付状态</label>
+						<div class="col-sm-9">
+							<select class="col-xs-10 col-sm-9" id="payStatus" name="payStatus">
+								<option value="">全部</option>
+								<option value="1" #if(1 == $!query.payStatus)selected="true" #end>未支付</option>
+								<option value="2" #if(2 == $!query.payStatus)selected="true" #end>已支付</option>
+							</select>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-4">
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right" for="form-field-1">收货人</label>
+						<div class="col-sm-9">
+							<span class="input-icon"><input type="text" id="consignee" name="consignee" value='$!query.consignee' /><i class="ace-icon fa fa-leaf blue"></i><span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-xs-12">
+				<div class="space-4"></div>
+				<div class="col-xs-4">
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right" for="form-field-1">开始时间</label>
+						<div class="col-sm-7">
+							<div class="input-group">
+								<input class="form-control date-picker" id="startBuyTime" name="startBuyTime" type="text" data-date-format="dd-mm-yyyy" value='$!query.startBuyTime' />
+								<span class="input-group-addon"><i class="fa fa-calendar bigger-110"></i></span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-4">
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right" for="form-field-1">结束时间</label>
+						<div class="col-sm-7">
+							<div class="input-group">
+								<input class="form-control date-picker" id="endBuyTime" name="endBuyTime" type="text" data-date-format="dd-mm-yyyy" value='$!query.endBuyTime'/>
+								<span class="input-group-addon"><i class="fa fa-calendar bigger-110"></i>
+								</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
+	<div style="clear:both;height:10px;"></div>
+	<div class="row">
+		<div class="col-xs-12">
+			<div>
+				<table id="orderTable"
+					class="table table-striped table-bordered table-hover">
+					<thead>
+						<tr>
+							<th>订单ID</th>
+							<th>用户账号</th>
+							<th>商家名称</th>
+							<th>订单状态</th>
+							<th>支付状态</th>
+							<th>支付方式</th>
+							<th>支付金额</th>
+							<th>收货人</th>
+							<th>下单时间</th>
+							<th><i class="ace-icon fa fa-clock-o bigger-110 hidden-480"></i>操作</th>
+						</tr>
+					</thead>
+
+					<tbody>
+						#foreach($order in $orderList)
+						<tr>
+							<td>$!order.orderId</td>
+							<td>$!order.userAccount</td>
+							<td>$!order.venderName</td>
+							<td>$!orderStatusMap.get($!order.orderStatus)</td>
+							<td>$!payStatusMap.get($!order.payStatus)</td>
+							<td>$!payTypeMap.get($!order.payType)</td>
+							<td>bu2xMoneyUtil.getMoneyString($!order.payAmount) 元</td>
+							<td>$!order.consignee</td>
+							<td>$!bu2xTimeUtil.getStringFromDate($!order.buyTime, "yyyy-MM-dd HH:mm:SS")</td>
+							<td>
+								<div class="hidden-sm hidden-xs action-buttons">
+									<a class="blue" href="detail.do?hostOrderId=$order.hostOrderId" title="查看详情"><i class="ace-icon glyphicon glyphicon-edit  bigger-130"></i></a>
+								</div>
+							</td>
+						</tr>
+						#end
+					</tbody>
+				</table>
+				#if($!orderList.totalItem > 0)
+					#set($startRow = $!orderList.startRow + 1)
+				#else
+					#set($startRow = 0)
+				#end
+				#set($endRow = $!orderList.startRow + $!orderList.size())
+				#if($!orderList.totalPage && $!orderList.totalPage>1)
+					#showPage($!orderList.index $!orderList.totalPage $!startRow $!endRow $!orderList.totalItem) 
+				#else 
+					#showPage( 1 1 $!startRow $!endRow $!orderList.totalItem) 
+				#end
+				<script type="text/javascript">
+					//index 跳转的目标页，total总页数
+					var toPage = function(index, total) {
+						index = index < 1 ? 1 : index;
+						index = index > total ? total : index;
+						$("#page").val(index);
+						$("#orderListForm").submit();
+					};
+				</script>
+			</div>
+		</div>
+	</div>
+</div>

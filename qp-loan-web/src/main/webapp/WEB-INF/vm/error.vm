@@ -1,0 +1,7 @@
+#set($title="Error")
+
+<div class="swap" style="margin-top:150px;text-align:center;">
+	<p style="font-size:36px;color:#707070;line-height:50px;margin-top:70px;">
+		$!errMsg
+	</p>
+</div>

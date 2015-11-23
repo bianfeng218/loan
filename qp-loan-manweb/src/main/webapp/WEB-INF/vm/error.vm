@@ -1,0 +1,31 @@
+#* @vtlvariable name="exception" type="java.lang.Exception" *#
+#set($title = "出错啦!-商城")
+<div class="w">
+	<div class="m" id="confirm">
+		<div class="mt">
+			<h2>xx业务</h2>
+		</div>
+		<div class="mc">
+			<div class="i-m" id="failed">
+				<div class="i-mc">
+					<s></s>
+					<ul>
+						<li><h2>出错啦！</h2>
+                        #if($exception)
+                            #if($!exception.class.simpleName=="NoSuchMethodException")
+                                $!response.setStatus(404)
+                                抱歉，您请求的页面现在无法打开！
+                            #else
+                                系统错误！
+                            #end
+                        #else
+                            #showSimpleError()&nbsp;
+                        #end
+                        </li>
+						<li class="fore"><a href="$homeModule">返回首页&gt;&gt;</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

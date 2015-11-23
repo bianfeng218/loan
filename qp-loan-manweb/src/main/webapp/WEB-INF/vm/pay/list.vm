@@ -1,0 +1,151 @@
+#set($nav_1st="订单管理" ) #set($nav_2nd="订单列表" )
+<script src="${staticServer}/bu2x/js/pay/list.js"></script>
+<div class="grid" style="width: 100%; float: left; height: 500px;">
+	<div class="toolbar" style="height:32px;">
+		<div id="myButtons" style="width: 100%; float: left; height: 30px;">
+			#if($!firstInit =="true")
+			<button type="button" id="serachorderBtn"
+				class="btn btn-white btn-info btn-bold">
+				<span class="glyphicon glyphicon-search"></span>高级搜索
+			</button>
+			#else
+			<button type="button" id="_serachorderBtn"
+				class="btn btn-white btn-info btn-bold">
+				<span class="glyphicon glyphicon-search"></span>搜索
+			</button>
+			#end
+		</div>
+	</div>
+	<div style="clear:both;height:10px;"></div>
+	<form id="payListForm" role="form" method="post" action="list.do">
+		<input id="firstInit" name="firstInit" value='$!firstInit' type="hidden" />
+		<input id="page" type="hidden" name="page" value="0" />
+		#if($!firstInit =="true")
+		<div id="searchcbox" style="width: 100%;height:64px;display:none;">
+		#else
+		<div id="searchcbox" style="width: 100%;height:64px">
+		#end
+			<div class="col-xs-12">
+				<div class="col-xs-4">
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right" for="form-field-1">订单ID</label>
+						<div class="col-sm-9">
+							<span class="input-icon"><input type="text" id="orderId" name="orderId" value='$!query.hostOrderId' /><i class="ace-icon fa fa-leaf blue"></i><span>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-4">
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right" for="form-field-1">用户账号</label>
+						<div class="col-sm-9">
+							<span class="input-icon"><input type="text" id="userAccount" name="userAccount" value='$!query.userAccount' /><i class="ace-icon fa fa-leaf blue"></i><span>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-4">
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right" for="form-field-1">支付状态</label>
+						<div class="col-sm-9">
+							<select class="col-xs-10 col-sm-9" id="payStatus" name="payStatus">
+								<option value="">全部</option>
+								#foreach($status in $!payStatusMap.keySet())
+									<option value='$!status' #if($!status == $!query.payStatus)selected="true" #end>$!payStatusMap.get($status)</option>
+								#end
+							</select>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-xs-12">
+				<div class="space-4"></div>
+				<div class="col-xs-4">
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right" for="form-field-1">支付方式</label>
+						<div class="col-sm-9">
+							<select class="col-xs-10 col-sm-9" id="payStatus" name="payStatus">
+								<option value="">全部</option>
+								#foreach($status in $!payTypeMap.keySet())
+									<option value='$!status' #if($!status == $!query.payType)selected="true" #end>$!payTypeMap.get($status)</option>
+								#end
+							</select>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-4">
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right" for="form-field-1">支付平台</label>
+							<div class="col-sm-9">
+							<select class="col-xs-10 col-sm-9" id="orderStatus" name="orderStatus">
+								<option value="">全部</option>
+								#foreach($status in $!payPlatformMap.keySet())
+									<option value='$!status' #if($!status == $!query.payPlatform)selected="true" #end>$!payPlatformMap.get($status)</option>
+								#end
+							</select>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
+	<div style="clear:both;height:10px;"></div>
+	<div class="row">
+		<div class="col-xs-12">
+			<div>
+				<table id="payTable"
+					class="table table-striped table-bordered table-hover">
+					<thead>
+						<tr>
+							<th>支付ID</th>
+							<th>订单id</th>
+							<th>用户账号</th>
+							<th>支付状态</th>
+							<th>应支付金额</th>
+							<th>支付平台</th>
+							<th>实际支付金额</th>
+							<th><i class="ace-icon fa fa-clock-o bigger-110 hidden-480"></i>操作</th>
+						</tr>
+					</thead>
+
+					<tbody>
+						#foreach($pay in $payList)
+						<tr>
+							<td>$!pay.paymentId</td>
+							<td>$!pay.orders</td>
+							<td>$!pay.userAccount</td>
+							<td>$!payStatusMap.get($!pay.payStatus)</td>
+							<td>bu2xMoneyUtil.getMoneyString($!pay.payAmount) 元</td>
+							<td>$!payPlatformMap.get($!pay.payPlatform)</td>
+							<td>bu2xMoneyUtil.getMoneyString($!pay.realPayAmount) 元</td>
+							<td>
+								<div class="hidden-sm hidden-xs action-buttons">
+									<a class="blue" href="detail.do?paymentId=$pay.paymentId" title="查看详情"><i class="ace-icon glyphicon glyphicon-edit  bigger-130"></i></a>
+								</div>
+							</td>
+						</tr>
+						#end
+					</tbody>
+				</table>
+				#if($!payList.totalItem > 0)
+					#set($startRow = $!payList.startRow + 1)
+				#else
+					#set($startRow = 0)
+				#end
+				#set($endRow = $!payList.startRow + $!payList.size())
+				#if($!payList.totalPage && $!payList.totalPage>1)
+					#showPage($!payList.index $!payList.totalPage $!startRow $!endRow $!payList.totalItem) 
+				#else 
+					#showPage( 1 1 $!startRow $!endRow $!payList.totalItem) 
+				#end
+				<script type="text/javascript">
+					//index 跳转的目标页，total总页数
+					var toPage = function(index, total) {
+						index = index < 1 ? 1 : index;
+						index = index > total ? total : index;
+						$("#page").val(index);
+						$("#payListForm").submit();
+					};
+				</script>
+			</div>
+		</div>
+	</div>
+</div>

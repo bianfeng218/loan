@@ -1,0 +1,144 @@
+#set($nav_1st="后台类目管理" ) #set($nav_2nd="后台类目列表" )
+<script src="${staticServer}/bu2x/js/category/list.js"></script>
+<div class="grid" style="width: 100%; float: left; height: 500px;">
+	<div class="toolbar" style="height:32px;">
+		<div id="myButtons" style="width: 100%; float: left; height: 30px;">
+			<a class="btn btn-danger btn-sm" style="float:right" href="list.do?parentId=$parentCat.parentId">
+				<i class="ace-icon fa fa-reply icon-only"></i>返回上一级
+			</a>
+			<button class="btn btn-sm categoryWin" style="float:right">
+				<i class="ace-icon fa fa-pencil align-top bigger-125"></i>新增一级类目
+			</button>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-12">
+			<div>
+				<table id="categoryTable" class="table table-striped table-bordered table-hover">
+					<thead>
+						<tr>
+							<th>类目ID</th>
+							<th>类目名称</th>
+							<th>父类目ID</th>
+							<th>父类目名称</th>
+							<th>类目级别</th>
+							<th>排序</th>
+							<th>是否有效</th>
+							<th>类目属性</th>
+							<th><i class="ace-icon fa fa-clock-o bigger-110 hidden-480"></i>操作</th>
+						</tr>
+					</thead>
+
+					<tbody>
+						#foreach($category in $categoryList)
+						<tr>
+							<td>$!category.catId</td>
+							<td>$!category.catName</td>
+							<td>$!category.parentId</td>
+							<td>$!parentCat.catName</td>
+							<td>$!category.catLevel</td>
+							<td>$!category.sortOrder</td>
+							<td>$!validStatusMap.get($!category.status)</td>
+							<td>待添加</td>
+							<td>
+								<div class="hidden-sm hidden-xs action-buttons">
+									<a class="blue categoryWin" tag="newCategory" title="新增下级" href="#" catId="$category.catId" catLevel="$category.catLevel"><i class="ace-icon glyphicon glyphicon-plus"></i>
+									</a>
+									<a class="blue viewCategory" title="查看下级" href="list.do?parentId=$category.catId"><i class="ace-icon glyphicon glyphicon-search"></i>
+									</a>
+									<a class="blue categoryWin" tag="modifyCategory" title="修改类目" href="#" catId="$category.catId"><i class="ace-icon glyphicon glyphicon-edit"></i>
+									</a>
+								</div>
+							</td>
+						</tr>
+						#end
+					</tbody>
+				</table>
+				#if($!categoryList.totalItem > 0)
+					#set($startRow = $!categoryList.startRow + 1)
+				#else
+					#set($startRow = 0)
+				#end
+				#set($endRow = $!categoryList.startRow + $!categoryList.size())
+				#if($!categoryList.totalPage && $!categoryList.totalPage>1)
+					#showPage($!categoryList.index $!categoryList.totalPage $!startRow $!endRow $!categoryList.totalItem) 
+				#else 
+					#showPage( 1 1 $!startRow $!endRow $!categoryList.totalItem) 
+				#end
+				<script type="text/javascript">
+					//index 跳转的目标页，total总页数
+					var toPage = function(index, total) {
+						index = index < 1 ? 1 : index;
+						index = index > total ? total : index;
+						$("#page").val(index);
+						$("#categoryListForm").submit();
+					};
+				</script>
+			</div>
+		</div>
+	</div>
+	
+	<div class="col-sm-5" style="background:white; height:500px; width:50%; display:none" id="newCategoryWin">
+		<input id="catId" name="catId" type="hidden" value='$!category.catId' />
+		<div class="widget-box">
+			<div class="widget-header">
+				<h4 class="widget-title">新增类目</h4>
+				<div class="widget-toolbar">
+					<a href="#" data-action="collapse">
+						<i class="ace-icon fa fa-chevron-up"></i>
+					</a>
+					<a href="#" id="closeCategoryWin">
+						<i class="ace-icon fa fa-times"></i>
+					</a>
+				</div>
+			</div>
+
+			<div class="widget-body">
+				<div class="widget-main no-padding">
+					<form id="newCategoryForm" method="post">
+						<fieldset>
+							<label>上级类目Id</label>
+							<input readonly id="parentId" name="parentId" class="col-sm-12" type="text">
+						</fieldset>
+						
+						<fieldset>
+							<label>类目名称</label>
+							<input id="catName" name="catName" class="col-sm-12 required" type="text" maxlength="20">
+						</fieldset>
+						
+						<fieldset>
+							<label>类目级别</label>
+							<input readonly id="catLevel" name="catLevel" class="col-sm-12 required" type="text" value='$!category.catLevel' >
+						</fieldset>
+						
+						<fieldset>
+							<label>排序</label>
+							<input id="sortOrder" name="sortOrder" class="col-sm-12" type="text" maxlength="20">
+						</fieldset>
+							
+						<fieldset>
+							<label>状态</label>
+							<select class="form-control" id="status" name="status">
+								<option value="1" selected="selected">有效</option>
+								<option value="2">无效</option>
+							</select>
+						</fieldset>
+						
+						<fieldset>
+							<label>备注</label>
+							<input type="textarea" class="autosize-transition form-control" style="overflow: hidden; word-wrap: break-word; resize: horizontal; height: 52px;" id="notes" name="notes">
+						</fieldset>
+
+						<div class="form-actions center">
+							<button type="submit" class="btn btn-sm btn-success" id="submitCategoryBtn">
+								确定
+								<i class="ace-icon fa fa-arrow-right icon-on-right bigger-110"></i>
+							</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+</div>

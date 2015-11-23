@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="GBK"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Administrator">
+
+	<typeAlias alias="Administrator" type="com.qp.loan.domain.Administrator"/>
+	
+	<sql id="allColumns">
+		id,pin,type,name,password,state,remark,created,modified
+	</sql>
+	
+	<sql id="insertColumns">
+		#id#,#pin#,#type#,#name#,#password#,#state#,#remark#,#created#,#modified#
+	</sql>
+	
+	<sql id="selectAs">
+		id,pin,type,name,password,state,remark,created,modified
+	</sql>
+	
+	<sql id="tableName">
+		administrator
+	</sql>
+	
+	<sql id="condition">
+		<dynamic prepend="where">
+			<isNotEmpty property="pin">
+				pin = #pin#
+			</isNotEmpty>
+		</dynamic>
+	</sql>
+	
+	<sql id="updateSet">
+		<dynamic prepend="set">
+			
+		</dynamic>
+		where id = #id#
+	</sql>
+	
+	<sql id="paginate">
+		<dynamic prepend="order by">
+			<isNotEmpty property="orderField">
+				$orderField$
+				<isEqual property="isAsc" compareValue="true">asc</isEqual>
+				<isEqual property="isAsc" compareValue="false">desc</isEqual>
+			</isNotEmpty>
+		</dynamic>
+		limit #startRow#,#pageSize#
+	</sql>
+	
+	<select id="queryById" parameterClass="int" resultClass="Administrator">
+		select <include refid="selectAs"/>
+			from <include refid="tableName"/>
+				where id = #id#
+	</select>
+	
+	<select id="queryByCondition" parameterClass="Administrator" resultClass="Administrator">
+		select <include refid="selectAs"/>
+			from <include refid="tableName"/>
+				<include refid="condition"/>
+				<include refid="paginate"/>
+	</select>
+	
+	<select id="countByCondition" parameterClass="Administrator" resultClass="int">
+		select count(id)
+			from <include refid="tableName"/>
+				<include refid="condition"/>
+	</select>
+	
+	<insert id="add" parameterClass="Administrator">
+		insert into <include refid="tableName"/>
+			(<include refid="allColumns"/>)
+		values(<include refid="insertColumns"/>);
+		<selectKey resultClass="int"  keyProperty="id" >    
+             SELECT last_insert_id() as id limit 0 ,1;   
+        </selectKey>    
+	</insert>
+	
+	<update id="update" parameterClass="Administrator">
+		update <include refid="tableName"/>
+    		<include refid="updateSet"/>
+	</update>
+	
+	<delete id="delete" parameterClass="int">
+		delete from 
+			<include refid="tableName"/>
+			 where id = #id#
+	</delete>
+</sqlMap> 

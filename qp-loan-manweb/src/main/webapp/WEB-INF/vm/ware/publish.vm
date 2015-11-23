@@ -1,0 +1,32 @@
+#set($nav_1st="商品管理" ) #set($nav_2nd="商品发布" )
+<script src="${staticServer}/bu2x/js/ware/publish.js"></script>
+<div class="cate-wrapper"
+	style="width: 100%; float: left; height: 500px;">
+	<div class="nav">选择类目（发布商品必须选择第三级类目）</div>
+	<div id="cate-container">
+
+		<div class="cat_box" id="box_1">
+			#foreach($category in $firstLevelCategory)
+			<li catId="$category.catId" catLevel="$category.catLevel">$category.catName</li> #end
+		</div>
+	</div>
+
+	<div id="cate-path">
+		<dl>
+			<div class="clearfix">
+				<dt>您当前选择的是：</dt>
+				<dd>
+					<ol class="category-path"></ol>
+				</dd>
+			</div>
+		</dl>
+
+	</div>
+
+	<div id="cateBottom">
+		<button type="button" id="nextBtn"
+			class="btn btn-white btn-info btn-bold" disabled="disabled">
+			<span class="glyphicon glyphicon-arrow-right"></span>下一步
+		</button>
+	</div>
+</div>

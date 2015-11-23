@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="GBK"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Ware">
+
+	<typeAlias alias="Ware" type="com.qp.loan.domain.Ware"/>
+	
+	<sql id="allColumns">
+		id,img,supplier_id,name,sku,unit,min_order_num,price,presell_price,state,created,modified
+	</sql>
+	
+	<sql id="insertColumns">
+		#id#,#img#,#supplierId#,#name#,#sku#,#unit#,#minOrderNum#,#price#,#presellPrice#,#state#,#created#,#modified#
+	</sql>
+	
+	<sql id="selectAs">
+		id,img,
+		supplier_id as supplierId,
+		name,sku,unit,
+		min_order_num as minOrderNum,
+		price,
+		presell_price as presellPrice,
+		state,created,modified
+	</sql>
+	
+	<sql id="tableName">
+		ware
+	</sql>
+	
+	<sql id="condition">
+		<dynamic prepend="where">
+			<isNotEmpty property="supplierId" prepend="and" >
+				supplier_id = #supplierId#
+			</isNotEmpty>
+		</dynamic>
+	</sql>
+	
+	<sql id="updateSet">
+		<dynamic prepend="set">
+			<isNotEmpty property="img" prepend=",">
+				img = #img#
+			</isNotEmpty>
+			<isNotEmpty property="supplierId" prepend=",">
+				supplier_id = #supplierId#
+			</isNotEmpty>
+			<isNotEmpty property="name" prepend=",">
+				name = #name#
+			</isNotEmpty>
+			<isNotEmpty property="sku" prepend=",">
+				sku = #sku#
+			</isNotEmpty>
+			<isNotEmpty property="unit" prepend=",">
+				unit = #unit#
+			</isNotEmpty>
+			<isNotEmpty property="minOrderNum" prepend=",">
+				min_order_num = #minOrderNum#
+			</isNotEmpty>
+			<isNotEmpty property="price" prepend=",">
+				price = #price#
+			</isNotEmpty>
+			<isNotEmpty property="presellPrice" prepend=",">
+				presell_price = #presellPrice#
+			</isNotEmpty>
+			<isNotEmpty property="state" prepend=",">
+				state = #state#
+			</isNotEmpty>
+			<isNotEmpty property="modified" prepend=",">
+				modified = #modified#
+			</isNotEmpty>
+		</dynamic>
+		where id = #id#
+	</sql>
+	
+	<sql id="paginate">
+		<dynamic prepend="order by">
+			<isNotEmpty property="orderField">
+				$orderField$
+				<isEqual property="isAsc" compareValue="true">asc</isEqual>
+				<isEqual property="isAsc" compareValue="false">desc</isEqual>
+			</isNotEmpty>
+		</dynamic>
+		limit #startRow#,#pageSize#
+	</sql>
+	
+	<select id="queryById" parameterClass="int" resultClass="Ware">
+		select <include refid="selectAs"/>
+			from <include refid="tableName"/>
+				where id = #id#
+	</select>
+	
+	<select id="queryByCondition" parameterClass="Ware" resultClass="Ware">
+		select <include refid="selectAs"/>
+			from <include refid="tableName"/>
+				<include refid="condition"/>
+				<include refid="paginate"/>
+	</select>
+	
+	<select id="countByCondition" parameterClass="Ware" resultClass="int">
+		select count(id)
+			from <include refid="tableName"/>
+				<include refid="condition"/>
+	</select>
+	
+	<insert id="add" parameterClass="Ware">
+		insert into <include refid="tableName"/>
+			(<include refid="allColumns"/>)
+		values(<include refid="insertColumns"/>);
+		<selectKey resultClass="int"  keyProperty="id" >    
+             SELECT last_insert_id() as id limit 0 ,1;   
+        </selectKey>    
+	</insert>
+	
+	<update id="update" parameterClass="Ware">
+		update <include refid="tableName"/>
+    		<include refid="updateSet"/>
+	</update>
+	
+	<delete id="delete" parameterClass="int">
+		delete from 
+			<include refid="tableName"/>
+			 where id = #id#
+	</delete>
+</sqlMap> 

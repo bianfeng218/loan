@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="GBK"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Supplier">
+
+	<typeAlias alias="Supplier" type="com.qp.loan.domain.Supplier"/>
+	
+	<sql id="allColumns">
+		id,pin,password,email,name,address,district,linkman,mobile,phone,state,created,modified
+	</sql>
+	
+	<sql id="insertColumns">
+		#id#,#pin#,#password#,#email#,#name#,#address#,#district#,#linkman#,#mobile#,#phone#,#state#,#created#,#modified#
+	</sql>
+	
+	<sql id="selectAs">
+		id,pin,password,email,name,address,district,linkman,mobile,phone,state,created,modified
+	</sql>
+	
+	<sql id="tableName">
+		supplier
+	</sql>
+	
+	<sql id="condition">
+		<dynamic prepend="where">
+			<isNotEmpty property="pin">
+				pin = #pin#
+			</isNotEmpty>
+		</dynamic>
+	</sql>
+	
+	<sql id="updateSet">
+		<dynamic prepend="set">
+			
+		</dynamic>
+		where id = #id#
+	</sql>
+	
+	<sql id="paginate">
+		<dynamic prepend="order by">
+			<isNotEmpty property="orderField">
+				$orderField$
+				<isEqual property="isAsc" compareValue="true">asc</isEqual>
+				<isEqual property="isAsc" compareValue="false">desc</isEqual>
+			</isNotEmpty>
+		</dynamic>
+		limit #startRow#,#pageSize#
+	</sql>
+	
+	<select id="queryById" parameterClass="int" resultClass="Supplier">
+		select <include refid="selectAs"/>
+			from <include refid="tableName"/>
+				where id = #id#
+	</select>
+	
+	<select id="queryByCondition" parameterClass="Supplier" resultClass="Supplier">
+		select <include refid="selectAs"/>
+			from <include refid="tableName"/>
+				<include refid="condition"/>
+				<include refid="paginate"/>
+	</select>
+	
+	<select id="countByCondition" parameterClass="Supplier" resultClass="int">
+		select count(id)
+			from <include refid="tableName"/>
+				<include refid="condition"/>
+	</select>
+	
+	<insert id="add" parameterClass="Supplier">
+		insert into <include refid="tableName"/>
+			(<include refid="allColumns"/>)
+		values(<include refid="insertColumns"/>);
+		<selectKey resultClass="int"  keyProperty="id" >    
+             SELECT last_insert_id() as id limit 0 ,1;   
+        </selectKey>    
+	</insert>
+	
+	<update id="update" parameterClass="Supplier">
+		update <include refid="tableName"/>
+    		<include refid="updateSet"/>
+	</update>
+	
+	<delete id="delete" parameterClass="int">
+		delete from 
+			<include refid="tableName"/>
+			 where id = #id#
+	</delete>
+</sqlMap> 

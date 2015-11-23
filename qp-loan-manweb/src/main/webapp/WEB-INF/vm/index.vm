@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta charset="utf-8" />
+    <title>不二选商城管理系统</title>
+
+    <meta name="description" content="overview &amp; stats" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+
+    <!-- bootstrap & fontawesome -->
+    <link rel="stylesheet" href="/statics/ace/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/statics/ace/css/font-awesome.min.css" />
+
+    <!-- page specific plugin styles -->
+
+    <!-- text fonts -->
+    <link rel="stylesheet" href="/statics/ace/css/ace-fonts.css" />
+
+    <!-- ace styles -->
+    <link rel="stylesheet" href="/statics/ace/css/ace.min.css" />
+
+    <!--[if lte IE 9]>
+    <link rel="stylesheet" href="/statics/ace/css/ace-part2.min.css" />
+    <![endif]-->
+    <link rel="stylesheet" href="/statics/ace/css/ace-skins.min.css" />
+    <link rel="stylesheet" href="/statics/ace/css/ace-rtl.min.css" />
+
+    <link rel="stylesheet" href="/statics/bu2x/css/bu2x.man.css" />
+
+    <!--[if lte IE 9]>
+    <link rel="stylesheet" href="/statics/ace/css/ace-ie.min.css" />
+    <![endif]-->
+
+    <!-- inline styles related to this page -->
+
+    <!-- ace settings handler -->
+    <script src="/statics/ace/js/ace-extra.min.js"></script>
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+
+    <!--[if lte IE 8]>
+    <script src="/statics/ace/js/html5shiv.js"></script>
+    <script src="/statics/ace/js/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body class="no-skin">
+<!-- #section:basics/navbar.layout -->
+<div class="navbar navbar-default">
+    <script type="text/javascript">
+        try{ace.settings.check('navbar' , 'fixed')}catch(e){}
+        //加入收藏
+        function addToFavorite() {
+            var a = "${shopManUrl}";
+            var b = "\u91d1\u60e0\u5bb6\u002d\u60a8\u7684\u8d34\u5fc3\u5c0f\u7ba1\u5bb6";
+            document.all ? window.external.AddFavorite(a, b) :
+                    window.sidebar && window.sidebar.addPanel ? window.sidebar.addPanel(b, a, "") :
+                            alert("\u5bf9\u4e0d\u8d77\uff0c\u60a8\u7684\u6d4f\u89c8\u5668\u4e0d\u652f\u6301\u6b64\u64cd\u4f5c!\n\u8bf7\u60a8\u4f7f\u7528\u83dc\u5355\u680f\u6216Ctrl+D\u6536\u85cf\u672c\u7ad9\u3002");
+        }
+        setInterval(
+                "showTimeSpan.innerHTML=new Date().toLocaleString()+' 星期'+'日一二三四五六'.charAt(new Date().getDay());",
+                1000);
+
+
+    </script>
+
+    <div class="navbar-container" id="navbar-container">
+        <div class="navbar_one">
+            <div class="navbar_left">
+                <div class="navbar_header_nav">
+                    <img src="/statics/bu2x/image/bu2x.png">
+                </div>
+                <div class="navbar_header_img">
+                    <img src="/statics/ace/images/terrace_myhome.png">
+		                    <span class="navbar_header_word">
+		                    	欢迎！登录系统！ </span>
+                </div>
+            </div>
+            <div class="navbar_right">
+                <div class="navbar_right_collect">
+                    <img src="/statics/ace/images/collect.png">
+                    <a href="javascript:addToFavorite();">
+                        <span  class="navbar_right_collect_word">收藏系统</span>
+                    </a>
+                </div>
+                <div class="navbar_right_exit">
+                    <img src="/statics/ace/images/lock.png">
+                    <a href="">
+                        <span  class="navbar_right_collect_word">设为主页</span>
+                    </a>
+                </div>
+                <span class="narbar_right_word" id="showTimeSpan"></span>
+            </div>
+        </div>
+
+        <div class="navbar_two">
+            <div class="tabbable">
+                <ul class="nav nav-tabs padding-16 tab-size-bigger tab-space-1">
+                    <li class="active">
+                        <a data-toggle="tab" href="javascript:void(0);">
+                            <i class="blue ace-icon glyphicon glyphicon-shopping-cart bigger-130"></i>
+                            <span class="bigger-110">商城管理系统</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- /section:basics/navbar.dropdown -->
+    </div><!-- /.navbar-container -->
+</div>
+
+<!-- /section:basics/navbar.layout -->
+<div class="main-container" id="main-container">
+    <script type="text/javascript">
+        try{ace.settings.check('main-container' , 'fixed')}catch(e){}
+    </script>
+
+    <!-- #section:basics/sidebar -->
+    <div id="sidebar" class="sidebar responsive">
+        <script type="text/javascript">
+            try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
+        </script>
+
+
+        <!-- #section:basics/sidebar.layout.minimize -->
+        <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
+            <i class="ace-icon fa fa-angle-double-left" data-isidebar-collapsecon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>
+        </div>
+
+        <ul class="nav nav-list">
+            <li class="active">
+                <a href="#" target="iframe_content" class="dropdown-toggle">
+                    <i class="menu-icon">
+                        <img src="/statics/ace/images/icon_1.png">
+                    </i>
+                    <span class="menu-text">商城管理系统首页</span>
+                </a>
+                <b class="arrow"></b>
+            </li>
+
+            <li class="hsub">
+                <a href="#" class="dropdown-toggle">
+                    <i class="menu-icon"><img src="/statics/ace/images/icon_2.png"></i>
+                    <span class="menu-text">类目管理</span>
+                    <b class="arrow fa fa-angle-down"></b>
+                </a>
+                <b class="arrow"></b>
+                <ul class="submenu">
+                    <li>
+                        <a href="category/list.do" target="iframe_content">
+                            <i class="menu-icon fa fa-caret-right"></i>
+                            <span class="menu-text">后台类目</span>
+                        </a>
+                        <b class="arrow"></b>
+                    </li>
+                </ul>
+            </li>
+             #if($authUtils.hasPrivilege($pin,$authCode.LOGIN))
+            <li class="hsub">
+                <a href="#" class="dropdown-toggle">
+                    <i class="menu-icon"><img src="/statics/ace/images/icon_3.png"></i>
+                    <span class="menu-text">商品管理</span>
+                    <b class="arrow fa fa-angle-down"></b>
+                </a>
+                <b class="arrow"></b>
+                <ul class="submenu">
+                    <li>
+                        <a href="ware/list.do" target="iframe_content">
+                            <i class="menu-icon fa fa-caret-right"></i>
+                            <span class="menu-text">商品列表</span>
+                        </a>
+                        <b class="arrow"></b>
+                    </li>
+                    <li>
+                        <a href="ware/publish.do" target="iframe_content">
+                            <i class="menu-icon fa fa-caret-right"></i>
+                            <span class="menu-text">商品发布</span>
+                        </a>
+                        <b class="arrow"></b>
+                    </li>
+                </ul>
+            </li>
+             #end
+#if($authUtils.hasPrivilege($pin,$authCode.ADDWARE))
+            <li class="hsub">
+                <a href="#" class="dropdown-toggle">
+                    <i class="menu-icon"><img src="/statics/ace/images/icon_4.png"></i>
+                    <span class="menu-text">订单管理</span>
+                    <b class="arrow fa fa-angle-down"></b>
+                </a>
+                <b class="arrow"></b>
+                <ul class="submenu">
+                    <li>
+                        <a href="order/list.do" target="iframe_content">
+                            <i class="menu-icon fa fa-caret-right"></i>
+                            <span class="menu-text">订单列表</span>
+                        </a>
+                        <b class="arrow"></b>
+                    </li>
+                    <li>
+                        <a href="pay/list.do" target="iframe_content">
+                            <i class="menu-icon fa fa-caret-right"></i>
+                            <span class="menu-text">支付列表</span>
+                        </a>
+                        <b class="arrow"></b>
+                    </li>
+                </ul>
+            </li>
+#end
+            <li class="hsub">
+                <a href="#" class="dropdown-toggle">
+                    <i class="menu-icon"><img src="/statics/ace/images/icon_5.png"></i>
+                    <span class="menu-text">用户管理</span>
+                    <b class="arrow fa fa-angle-down"></b>
+                </a>
+                <b class="arrow"></b>
+                <ul class="submenu">
+                    <li>
+                        <a href="user/list.do" target="iframe_content">
+                            <i class="menu-icon fa fa-caret-right"></i>
+                            <span class="menu-text">前台用户</span>
+                        </a>
+                        <b class="arrow"></b>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <!-- /.nav-list -->
+
+        <!-- /section:basics/sidebar.layout.minimize -->
+        <script type="text/javascript">
+            try{ace.settings.check('sidebar' , 'collapsed')}catch(e){}
+        </script>
+    </div>
+
+    <div class="main-content"><iframe class="content_frame" src="welcome.do" frameborder="0" name="iframe_content"></iframe></div>
+
+    <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse display">
+        <i class="ace-icon fa fa-angle-double-up icon-only bigger-110"></i>
+    </a>
+</div><!-- /.main-container -->
+
+<!-- basic scripts -->
+
+<!--[if !IE]> <!-->
+<script type="text/javascript">
+    window.jQuery || document.write("<script src='/statics/ace/js/jquery.min.js'>"+"<"+"/script>");
+</script>
+<!-- <![endif]-->
+
+<!--[if IE]>
+<script type="text/javascript">
+    window.jQuery || document.write("<script src='/statics/ace/js/jquery1x.min.js'>"+"<"+"/script>");
+</script>
+<![endif]-->
+<script type="text/javascript">
+    if('ontouchstart' in document.documentElement) document.write("<script src='/statics/ace/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
+</script>
+<script src="/statics/ace/js/bootstrap.min.js"></script>
+
+<!-- page specific plugin scripts -->
+
+<!--[if lte IE 8]>
+<script src="/statics/ace/js/excanvas.min.js"></script>
+<![endif]-->
+<script src="/statics/ace/js/jquery-ui.custom.min.js"></script>
+<script src="/statics/ace/js/jquery.ui.touch-punch.min.js"></script>
+<script src="/statics/ace/js/jquery.easypiechart.min.js"></script>
+<script src="/statics/ace/js/jquery.sparkline.min.js"></script>
+<script src="/statics/ace/js/flot/jquery.flot.min.js"></script>
+<script src="/statics/ace/js/flot/jquery.flot.pie.min.js"></script>
+<script src="/statics/ace/js/flot/jquery.flot.resize.min.js"></script>
+
+<!-- ace scripts -->
+<script src="/statics/ace/js/ace-elements.min.js"></script>
+<script src="/statics/ace/js/ace.min.js"></script>
+<!-- inline scripts related to this page -->
+<script type="text/javascript">
+    jQuery(function($) {
+        $("div#sidebar a").click(function(){
+
+            var p = $(this).parent("li");
+
+            if($(this).hasClass("dropdown-toggle")){
+                if(!p.hasClass("hsub")){
+                    $("div#sidebar ul li").removeClass("active");
+                    $("div#sidebar li").removeClass("open");
+                    $("div#sidebar ul.submenu").removeClass("nav-show").slideUp("normal");
+                    p.addClass("active");
+                    $("iframe[name='iframe_content']").attr("src","welcome.do");
+                }
+            } else {
+                $("div#sidebar ul li").removeClass("active");
+                p.parents("li").addClass("active");
+                p.addClass("active");
+            }
+
+        });
+
+    })
+</script>
+
+<link rel="stylesheet" href="/statics/ace/css/ace.onpage-help.css" />
+<script type="text/javascript"> ace.vars['base'] = '..'; </script>
+<script src="/statics/ace/js/ace/ace.onpage-help.js"></script>
+
+</body>
+</html>
+

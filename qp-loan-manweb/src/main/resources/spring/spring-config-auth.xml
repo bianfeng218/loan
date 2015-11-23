@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+       default-autowire="byName">
+    <!-- 权限处理service -->
+    <bean id="authService" class="com.qp.loan.service.auth.impl.AuthServiceImpl">
+    	<property name="opArray">
+    		<list>
+    			<!-- 用户管理 -->
+    			<value>新增用户</value><!-- 0 -->
+    			<value>修改用户</value><!-- 1 -->
+    			<value>删除用户</value><!-- 2 -->
+    			<value>查看用户列表</value><!-- 3 -->
+    			<value>查看用户详情</value><!-- 4 -->
+    			
+    			<!-- 应用管理 -->
+    			<value>录入应用</value><!-- 5 -->
+    			<value>删除应用</value><!-- 6 -->
+    			<value>修改应用</value><!-- 7 -->
+    			<value>查看应用列表</value><!-- 8 -->
+    			<value>查看应用详情</value><!-- 9 -->
+    			<value>查看接入密钥</value><!-- 10 -->
+    			
+    			<!-- 视频管理 -->
+    			<value>上传视频</value><!-- 11 -->
+    			<value>查看视频列表</value><!-- 12 -->
+    			<value>查看视频详情</value><!-- 13 -->
+    			<value>停用视频</value><!-- 14 -->
+    			<value>启用视频</value><!-- 15 -->
+    			
+    			<value>查看播放代码</value><!-- 16 -->
+    			<value>编辑视频</value><!-- 17 -->
+    			<value>删除视频</value><!-- 18 -->
+    			<value>查看视频代理商相关信息</value><!-- 19 -->
+    			<value>设置视频封面</value><!-- 20 -->
+
+    			<value>视频状态追踪</value><!-- 21 -->
+    			<value>视频预览</value><!-- 22 -->
+    			
+    			<!-- 数据统计 -->
+    			<value>查看单个视频播放量统计</value><!-- 23 -->
+    			<value>查看应用视频播放量统计</value><!-- 24 -->
+    			
+    			<!-- 系统管理 -->
+    			<value>查看视频备份列表</value><!-- 25 -->
+    			
+    			<!-- 菜单的展示与否 -->
+    			<value>菜单展示-应用管理</value><!-- 26 -->
+    			<value>菜单展示-录入应用</value><!-- 27 -->
+    			<value>菜单展示-应用列表</value><!-- 28 -->
+    			
+    			<value>菜单展示-用户管理</value><!-- 29 -->
+    			<value>菜单展示-新增用户</value><!-- 30 -->
+    			<value>菜单展示-用户列表</value><!-- 31 -->
+    			
+    			<value>菜单展示-视频管理</value><!-- 32 -->
+    			<value>菜单展示-上传视频</value><!-- 33 -->
+    			<value>菜单展示-视频列表</value><!-- 34 -->
+    			
+    			<value>菜单展示-数据统计</value><!-- 35 -->
+    			<value>菜单展示-视频播放量统计</value><!-- 36 -->
+    			
+    			<value>菜单展示-系统管理</value><!-- 37 -->
+    			<value>菜单展示-视频备份列表</value><!-- 38 -->
+    			<value>菜单展示-worker控制台</value><!-- 39 -->
+    			
+    			<value>菜单展示-视频上传-简版</value><!-- 40 -->
+    			<value>修改视频总播放量</value><!-- 41 -->
+    			<value>通过上传人查询</value><!-- 42 -->
+    			<value>视频搬家</value><!-- 43 -->
+    		</list>
+    	</property>
+    	<property name="authMap">
+			<map key-type="java.lang.String" value-type="java.util.Set">
+				<entry key="系统管理员">
+					<list>
+						<value>新增用户</value>
+						<value>登录</value>
+					</list>
+				</entry>
+				<entry key="服务商">
+					<list>
+						<value>查看订单</value>
+					</list>
+				</entry>
+				<entry key="信贷公司">
+					<list>
+						<value>设置贷款额度</value>
+					</list>
+				</entry>
+			</map>
+    	</property>
+    </bean>
+</beans>

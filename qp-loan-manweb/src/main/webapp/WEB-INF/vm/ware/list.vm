@@ -1,0 +1,169 @@
+#set($nav_1st="商品管理" ) #set($nav_2nd="商品列表" )
+<script src="${staticServer}/bu2x/js/ware/list.js"></script>
+<div class="grid" style="width: 100%; float: left; height: 500px;">
+	<div class="toolbar" style="height:32px;">
+		<div id="myButtons" style="width: 100%; float: left; height: 30px;">
+			<button type="button" id="addwareBtn" class="btn btn-white btn-info btn-bold">
+				<span class="glyphicon glyphicon-plus"></span>添加
+			</button>
+			<button type="button" id="trashwareBtn" class="btn btn-white btn-info btn-bold">
+				<span class="glyphicon glyphicon-trash"></span>回收站
+			</button>
+			#if($!firstInit =="true")
+			<button type="button" id="serachwareBtn" class="btn btn-white btn-info btn-bold">
+				<span class="glyphicon glyphicon-search"></span>高级搜索
+			</button>
+			#else
+			<button type="button" id="_serachwareBtn" class="btn btn-white btn-info btn-bold">
+				<span class="glyphicon glyphicon-search"></span>搜索
+			</button>
+			#end
+		</div>
+	</div>
+	<div style="clear:both;height:10px;"></div>
+	<form id="wareListForm" role="form" method="post" action="list.do">
+		<input id="firstInit" name="firstInit" value='$!firstInit' type="hidden" />
+		<input id="page" type="hidden" name="page" value="0" />
+		#if($!firstInit =="true")
+		<div id="searchcbox" style="width: 100%;height:64px;display:none;">
+		#else
+		<div id="searchcbox" style="width: 100%;height:64px">
+		#end
+			<div class="col-xs-12">
+				<div class='col-xs-4'>
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right" for="wareId">商品ID</label>
+						<div class="col-sm-9">
+							<span class="input-icon">
+								<input id="wareId" name="wareId" type="text" value=$!wareQuery.wareId><i class="ace-icon fa fa-leaf blue"></i>
+							</span>
+						</div>
+					</div>
+				</div>
+				<div class='col-xs-4'>
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right" for="itemNumTxt">商品货号</label>
+						<div class="col-sm-9">
+							<span class="input-icon">
+								<input id="itemNumTxt" name="itemNum" type="text" value=$!wareQuery.itemNum><i class="ace-icon fa fa-leaf blue"></i>
+							</span>
+						</div>
+					</div>
+				</div>
+				<div class='col-xs-4'>
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right" for="titleTxt">商品名称</label>
+						<div class="col-sm-9">
+							<span class="input-icon">
+								<input id="titleTxt" type="text" name="title" value=$!wareQuery.title><i class="ace-icon fa fa-leaf blue"></i>
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-xs-12">
+				<div class='col-xs-4'>
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right" for="catNameTxt">分类</label>
+						<div class="col-sm-9">
+							<input id="catIdTxt" name="catId" type="hidden" value="$!wareQuery.catId">
+							<input id="catNameTxt" name="catName" type="hidden" value='$!wareQuery.catName'>
+							<button id="btn_parent_cat" data-toggle="dropdown" class="col-sm-6 btn btn-primary btn-white dropdown-toggle $!{disabled}">
+								<span>#if($wareQuery.catName != "") $!wareQuery.catName #else -- 请选择类目 -- #end</span>
+								<i class="ace-icon fa fa-angle-down icon-on-right"></i>
+							</button>
+							$!catMenuHtml
+						</div>
+					</div>
+				</div>
+				<div class='col-xs-4'>
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right"
+							for="wareStatusTxt">商品状态</label>
+						<div class="col-sm-9">
+							<select class="col-sm-6" id="wareStatusTxt" name="wareStatus">
+								<option value="">全部</option>
+								<option value="1" #if($!wareQuery.wareStatus== 1)selected="true" #end>在售中</option>
+								<option value="2" #if($!wareQuery.wareStatus== 2)selected="true" #end>仓库中</option>
+								<option value="3" #if($!wareQuery.wareStatus== 3)selected="true" #end>违规</option>
+							</select>
+						</div>
+					</div>
+				</div>
+				<div class='col-xs-4'>
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right" for="stockStatus">库存状态</label>
+						<div class="col-sm-9">
+							<select class="col-sm-6" id="stockStatus" name="stockStatus" selected='1'>
+								<option value="">全部</option>
+								<option value="1" #if($!wareQuery.stockStatus== 1)selected="true" #end>有库存</option>
+								<option value="2" #if($!wareQuery.stockStatus== 2)selected="true" #end>无库存</option>
+							</select>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
+	<div style="clear:both;height:10px;"></div>
+	<div class="row">
+		<div class="col-xs-12">
+			<div>
+				<table id="wareTable" class="table table-striped table-bordered table-hover">
+					<thead>
+						<tr>
+							<th>商品id</th>
+							<th>类目名称</th>
+							<th>商家名称</th>
+							<th>商品状态</th>
+							<th>商品标题</th>
+							<th>库存状态</th>
+							<th>备货期</th>
+							<th><i class="ace-icon fa fa-clock-o bigger-110 hidden-480"></i>操作</th>
+						</tr>
+					</thead>
+
+					<tbody>
+						#foreach($ware in $wareList)
+						<tr>
+							<td>$!ware.wareId</td>
+							<td>$!ware.catName</td>
+							<td>$!ware.venderName</td>
+							<td>$!ware.status</td>
+							<td>$!ware.title</td>
+							<td>$!ware.stockStatus</td>
+							<td>$!ware.deliveryDays</td>
+							<td>
+								<div class="hidden-sm hidden-xs action-buttons">
+									<a class="green" href="javascript:void(0);" href="#" title="编辑" tag="editWare" wareid="$ware.wareId"><i class="ace-icon fa fa-pencil bigger-130"></i></a>
+								</div>
+							</td>
+						</tr>
+						#end
+					</tbody>
+				</table>
+				#if($!wareList.totalItem > 0)
+					#set($startRow = $!wareList.startRow + 1)
+				#else
+					#set($startRow = 0)
+				#end
+				#set($endRow = $!wareList.startRow + $!wareList.size())
+				#if($!wareList.totalPage && $!wareList.totalPage>1)
+					#showPage($!wareList.index $!wareList.totalPage $!startRow $!endRow $!wareList.totalItem) 
+				#else 
+					#showPage( 1 1 $!startRow $!endRow $!wareList.totalItem) 
+				#end
+				<script type="text/javascript">
+					//index 跳转的目标页，total总页数
+					var toPage = function(index, total) {
+						index = index < 1 ? 1 : index;
+						index = index > total ? total : index;
+						$("#page").val(index);
+						$("#wareListForm").submit();
+					};
+				</script>
+			</div>
+		</div>
+	</div>
+	
+</div>

@@ -1,0 +1,125 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+	<!-- 系统公共日志开始 -->
+	<!-- 控制台日志 -->
+	<appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[%7r] %6p - %30.30c - %m \n" />
+		</layout>
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">
+			<param name="LevelMin" value="${log.console.level}" />
+			<!--<param name="LevelMax" value="FATAL "/> -->
+		</filter>
+	</appender>
+	<!-- debug日志 -->
+	<appender name="LOGGER-DEBUG" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="Encoding" value="UTF-8" />
+		<param name="DatePattern" value="'.'yyyy-MM-dd" />
+		<param name="file" value="${log.path}/shop-debug.log" />
+		<param name="Append" value="true" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="${log.ConversionPattern}" />
+		</layout>
+	</appender>
+	<!-- INFO级别日志 -->
+	<appender name="LOGGER-INFO" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="Encoding" value="UTF-8" />
+		<param name="DatePattern" value="'.'yyyy-MM-dd" />
+		<param name="file" value="${log.path}/shop-info.log" />
+		<param name="Append" value="true" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="${log.ConversionPattern}" />
+		</layout>
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">
+			<param name="LevelMax" value="INFO" />
+			<param name="LevelMin" value="INFO" />
+		</filter>
+	</appender>
+	<!-- WARN级别日志 -->
+	<appender name="LOGGER-WARN" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="Encoding" value="UTF-8" />
+		<param name="DatePattern" value="'.'yyyy-MM-dd" />
+		<param name="file" value="${log.path}/shop-warn.log" />
+		<param name="Append" value="true" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="${log.ConversionPattern}" />
+		</layout>
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">
+			<param name="LevelMax" value="WARN" />
+			<param name="LevelMin" value="WARN" />
+		</filter>
+	</appender>
+	<!-- ERROR级别日志 -->
+	<appender name="LOGGER-ERROR" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="Encoding" value="UTF-8" />
+		<param name="DatePattern" value="'.'yyyy-MM-dd" />
+		<param name="file" value="${log.path}/shop-error.log" />
+		<param name="Append" value="true" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="${log.ConversionPattern}" />
+		</layout>
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">
+			<param name="LevelMax" value="ERROR" />
+			<param name="LevelMin" value="ERROR" />
+		</filter>
+	</appender>
+	<appender name="FILE-ALL" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="Encoding" value="UTF-8" />
+		<param name="DatePattern" value="'.'yyyy-MM-dd" />
+		<param name="Append" value="true" />
+		<param name="file" value="${log.path}/shop-all.log" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d [%7r] %6p - %30.30c - %m \n" />
+		</layout>
+	</appender>
+	<!-- 系统公共日志结束 -->
+
+	<!-- 业务日志开始 -->
+
+	<!-- 业务日志结束 -->
+
+	<!-- ibatis 日志 开始 -->
+	<appender name="IBatis" class="org.apache.log4j.ConsoleAppender">
+		<param name="Encoding" value="UTF-8" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[%7r] %6p - %30.30c - %m \n" />
+		</layout>
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">
+			<param name="LevelMin" value="${log.sql.statment.level}" />
+			<param name="LevelMax" value="${log.sql.statment.level}" />
+		</filter>
+	</appender>
+
+	<logger name="com.ibatis" additivity="true">
+		<level value="${log.sql.statment.level}" />
+	</logger>
+
+	<logger name="java.sql.Connection" additivity="true">
+		<level value="${log.sql.statment.level}" />
+	</logger>
+
+	<logger name="java.sql.Statement" additivity="true">
+		<level value="${log.sql.statment.level}" />
+	</logger>
+
+	<logger name="java.sql.PreparedStatement" additivity="true">
+		<level value="${log.sql.statment.level}" />
+		<appender-ref ref="IBatis" />
+	</logger>
+
+	<logger name="java.sql.ResultSet" additivity="true">
+		<level value="ERROR" />
+		<appender-ref ref="IBatis" />
+	</logger>
+
+	<!-- ibatis 日志 结束 -->
+
+	<!-- 业务日志结束 -->
+
+	<root>
+		<priority value="${log.level}" />
+		<appender-ref ref="CONSOLE" />
+		<appender-ref ref="FILE-ALL" />
+	</root>
+</log4j:configuration>

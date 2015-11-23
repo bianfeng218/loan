@@ -1,0 +1,192 @@
+#set($nav_1st="商品管理" ) #set($nav_2nd="商品发布" )
+<script>
+	window.UEDITOR_HOME_URL = "${staticServer}/ueditor/";
+	window.imgServer = "${imageServer}";
+</script>
+
+<script src='${staticServer}/ueditor/ueditor.config.js' charset="utf-8"></script>
+<script src='${staticServer}/ueditor/ueditor.all.min.js' charset="utf-8"></script>
+<script src='${staticServer}/ueditor/ueditor.parse.min.js' charset="utf-8"></script>
+<script src='${staticServer}/ueditor/lang/zh-cn/zh-cn.js' charset="utf-8"></script>
+<script src="${staticServer}/bu2x/js/ware/publishNext.js" charset="utf-8"></script>
+
+<div style="width: 100%; float: left; height: 500px;">
+	<input id="catId" type="hidden" value='$!catId' />
+	<input id="categoryPath" type="hidden" value='$!categoryPath' />
+	<div class="tabbable">
+		<ul class="nav nav-tabs" id="myTab">
+			<li class="active"><a href="#baseinfo" data-toggle="tab">
+				<i class="green ace-icon fa fa-info bigger-120"></i> 基本信息 </a>
+			</li>
+
+			<li>
+				<a href="#picture" data-toggle="tab"><i class="green ace-icon glyphicon glyphicon-picture bigger-120"></i>图片</a>
+			</li>
+
+			<li>
+				<a href="#price" data-toggle="tab"><i class="green ace-icon fa fa-money bigger-120"></i>价格</a>
+			</li>
+		</ul>
+
+		<div class="tab-content">
+			<div class="tab-pane in active" id="baseinfo">
+				<form id="wareForm" class="form-horizontal" role="form" method="post">
+					<div class="form-group">
+						<div class="col-xs-5">
+							<label class="col-sm-3 control-label no-padding-right">商品分类</label>
+							<div class="col-sm-9">
+								<label class="control-label no-padding-left">$!categoryPath</label>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-xs-5">
+							<label class="col-sm-3 control-label no-padding-right" for="title">商品名称</label>
+							<div class="col-sm-9">
+								<input id="title" name="title" value='$!wareDetail.title' class="col-sm-8 required" maxlength="100" type="text">
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-xs-5">
+							<label class="col-sm-3 control-label no-padding-right" for="itemNum">商品货号</label>
+							<div class="col-sm-9">
+								<input id="itemNum" name="itemNum" value='$!wareDetail.itemNum' class="col-sm-8 required" maxlength="25" type="text">
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-xs-5">
+							<label class="col-sm-3 control-label no-padding-right" for="simpleDesc">商品简述</label>
+							<div class="col-sm-9">
+								<textarea id="simpleDesc" name="simpleDesc" class="col-sm-8  autosize-transition form-control required" maxlength="100">$!wareDetail.simpleDesc</textarea>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-xs-5">
+							<label class="col-sm-3 control-label no-padding-right" for="parent_cat_name">有无库存</label>
+							<div class="col-sm-9">
+								<div style="margin-top: 5px;">
+									<input name="hasStock" checked="checked" value="1" class="" type="radio"> 有&nbsp;&nbsp; 
+									<input name="hasStock" #if($!wareDetail.hasStock==2)checked= "checked"#end value="2" class="" type="radio"> 无
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-xs-5">
+							<label class="col-sm-3 control-label no-padding-right" for="parent_cat_name">是否上架</label>
+							<div class="col-sm-9">
+								<div style="margin-top: 5px;">
+									<input name="wareStatus" checked="checked" value="1" class="" type="radio"> 是&nbsp;&nbsp;
+									<input name="wareStatus" #if($!wareDetail.wareStatus==2)checked= "checked"#end value="2" class="" type="radio"> 否
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-xs-5">
+							<label class="col-sm-3 control-label no-padding-right" for="preDays">备货时间</label>
+							<div class="col-sm-9">
+								<input id="preDays" name="preDays" value='$!wareDetail.preDays' class="col-sm-3 required checkPriceNoFj" maxlength="2" type="text">
+								<label class="col-sm-2 control-label no-padding-left">天</label>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-xs-12">
+							<label style="margin-left: 20px;" class="col-sm-1 control-label no-padding-right" for="notes">详细描述</label>
+							<div class="col-sm-10">
+								<script id="editor" type="text/plain" style="min-height:300px;">$!wareDetail.wareDesc</script>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+
+			<div class="tab-pane" id="picture">
+				<div style="height :30px;">每次上传的最后一张将被标记为主图</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<!-- PAGE CONTENT BEGINS -->
+						<div>
+							<div>
+								<ul class="ace-thumbnails clearfix">
+									<!-- #section:pages/gallery -->
+									#foreach($imageId in $wareDetail.images.keySet())
+									<li><input type="hidden" value="$!imageId">
+										<a class="cboxElement" href='$!imageServer/$!wareDetail.images.get($imageId)' title="Photo Title" data-rel="colorbox">
+											<img alt="150x150" src='$!imageServer/$!wareDetail.images.get($imageId)' style="width:150px;height:150px;">
+										</a>
+										<div class="tags">
+											<span class="label-holder"><span class="label label-warning arrowed-in"></span></span>
+										</div>
+
+										<div class="tools">
+											<a href="#" onclick="PublishNext.deletePic(this);"><i class="ace-icon glyphicon glyphicon-remove" title="删除"></i>
+											</a>
+										</div>
+									</li>
+									#end
+								</ul>
+							</div>
+							<form action="upload.do" class="dropzone" id="dropzone"	method="post" enctype="multipart/form-data" target="hiddenIframe">
+							<iframe height=0 width=0 src="" frameborder="0" name="hiddenIframe"></iframe>
+								<input id="wareId" name="wareId" type="hidden" value='$!wareDetail.wareId' />
+								<div class="fallback">
+									<input multiple="" type="file" name="file" id="wareImage" class="col-sm-8" />
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="tab-pane" id="price">
+				<form id="priceForm" class="form-horizontal" role="form" method="post">
+					<input id="skuId" name="skuId" type="hidden" value='$!wareDetail.skuId' />
+					<div class="row">
+						<div class="col-xs-12">
+							<div>
+								<div class="form-group">
+									<div class="col-xs-5">
+										<label class="col-sm-4 control-label no-padding-right" for="costPrice">供货价（元）</label>
+										<div class="col-sm-8">
+											<input id="costPrice" value='$!bu2xMoneyUtil.getMoneyString($!wareDetail.costPrice)' name="costPrice" class="col-sm-4 required number isDecimal MaxTenMillion" type="text">
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="col-xs-5">
+										<label class="col-sm-4 control-label no-padding-right" for="salePrice">销售价（元）</label>
+										<div class="col-sm-8">
+											<input id="salePrice" value='$!bu2xMoneyUtil.getMoneyString($!wareDetail.salePrice)' name="salePrice" class="col-sm-4 required number isDecimal MaxTenMillion" type="text">
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="col-xs-5">
+										<label class="col-sm-4 control-label no-padding-right" for="salePrice">库存</label>
+										<div class="col-sm-8">
+											<input id="stock" value='$!wareDetail.stock' name="stock" class="col-sm-4 required number" type="text">
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+			
+			<div class="clearfix form-actions">
+				<div class="col-md-offset-3 col-md-9">
+					<button id="submitBtn" class="btn btn-info" type="submit">
+						<i class="ace-icon fa fa-check bigger-110"></i>
+						<label id="sureOrNext">确定</label>
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

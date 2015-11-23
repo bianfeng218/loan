@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd 
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd"
+       default-autowire="byName">
+
+    <!-- ajax json对于时间的配置 -->
+    <bean id="jacksonObjectMapper" class="org.codehaus.jackson.map.ObjectMapper"/>
+    <bean id="jacksonObjectMapperInit" class="com.qp.common.JacksonObjectMapperInit"
+          init-method="init">
+        <property name="objectMapper" ref="jacksonObjectMapper"></property>
+    </bean>
+
+    <bean
+            class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping"/>
+    <bean
+            class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+        <property name="webBindingInitializer">
+            <bean class="com.qp.common.web.form.ViewDateCoverter"/>
+        </property>
+
+        <property name="messageConverters">
+            <list>
+                <bean
+                        class="org.springframework.http.converter.StringHttpMessageConverter">
+                    <property name="supportedMediaTypes">
+                        <list>
+                            <value>text/plain;charset=UTF-8</value>
+                        </list>
+                    </property>
+                </bean>
+                <bean  class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
+                    <property name="objectMapper" ref="jacksonObjectMapper"/>
+                </bean>
+            </list>
+        </property>
+    </bean>
+
+    <!--velocity视图 -->
+    <bean id="velocityConfigurer"
+          class="org.springframework.web.servlet.view.velocity.VelocityConfigurer">
+        <property name="resourceLoaderPath">
+            <value>/WEB-INF/vm/</value>
+        </property>
+        <property name="configLocation" value="classpath:properties/velocity.properties"/>
+        <property name="velocityProperties">
+            <props>
+                <prop key="input.encoding">utf-8</prop>
+                <prop key="output.encoding">utf-8</prop>
+                <prop key="contentType">text/html;charset=UTF-8</prop>
+                <prop key="velocimacro.library">common/macro.vm</prop>
+                <!-- contentType -->
+            </props>
+        </property>
+    </bean>
+
+    <!--视图配置 -->
+    <bean id="viewResolver" class="com.qp.common.web.view.QpVelocityLayoutViewResolver">
+        <property name="velocityUrl" ref="velocityUrl"></property>
+        <property name="velocityTools" ref="velocityTools"></property>
+        <property name="cache" value="false"></property>
+        <!--是否缓存模板 -->
+        <property name="suffix" value=".vm"/>
+        <property name="prefix" value=""/>
+        <property name="layoutUrl" value="layout/default.vm"/>
+        <property name="exposeSpringMacroHelpers" value="true"/>
+        <property name="dateToolAttribute" value="dateTool"/>
+        <property name="numberToolAttribute" value="numberTool"/>
+        <property name="contentType" value="text/html;charset=UTF-8"></property>
+        <property name="exposeRequestAttributes">
+            <value>true</value>
+        </property>
+        <property name="exposeSessionAttributes">
+            <value>true</value>
+        </property>
+    </bean>
+
+    <!--页面公共url -->
+    <bean id="velocityUrl" class="java.util.HashMap">
+        <constructor-arg>
+            <map>
+                <entry key="homeDomain">
+                    <bean class="com.qp.common.web.url.QpUrl">
+                        <property name="url" value="http://${home.domain}"/>
+                    </bean>
+                </entry>
+                <entry key="staticServer">
+                    <bean class="com.qp.common.web.url.QpUrl">
+                        <property name="url" value="http://${home.domain}/statics"/>
+                    </bean>
+                </entry>
+            </map>
+        </constructor-arg>
+    </bean>
+
+    <!-- 自定义工具bean -->
+    <bean id="velocityTools" class="java.util.HashMap">
+        <constructor-arg>
+            <map>
+                <entry key="stringUtils">
+                    <bean class="org.apache.commons.lang.StringUtils"/>
+                </entry>
+                <entry key="stringEscapeUtils">
+                    <bean class="org.apache.commons.lang.StringEscapeUtils"/>
+                </entry>
+                <entry key="dateUtils">
+                    <bean class="org.apache.commons.lang.time.DateUtils"/>
+                </entry>
+                <!--权限验证相关-->
+                <entry key="authUtils" value-ref="authService">
+                </entry>
+                <entry key="authCode">
+                    <bean class="com.qp.loan.service.auth.AuthCode"/>
+                </entry>
+            </map>
+        </constructor-arg>
+    </bean>
+    <!-- 配置拦截器 -->
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <mvc:exclude-mapping path="/uc/*.do"/>
+            <bean id="cookieValidateInterceptor" class="com.qp.common.web.interceptor.QpManCookieInterceptor">
+                <property name="secretKey" value="${loan.auth.key}"/>
+            </bean>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <mvc:exclude-mapping path="/uc/*.do"/>
+            <bean id="manLoginInterceptor" class="com.qp.common.web.interceptor.QpLoginInterceptor">
+                <property name="loginUrl" value="${passport.login.url}"/>
+            </bean>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <bean class="com.qp.loan.service.auth.PrivilegeInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
+</beans>
